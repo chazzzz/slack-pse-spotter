@@ -1,0 +1,22 @@
+{
+  "name": "gspotter",
+  "version": "0.0.1",
+  "main": "gspotter.js",
+  "author": "Chazzzz",
+  "description": "Slack slash command for getting a stock value in PSE",
+  "dependencies": {
+    "botkit": "latest"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chazzzz/slack-pse-spotter.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chazzzz/slack-pse-spotter/issues"
+  },
+  "homepage": "https://github.com/chazzzz/slack-pse-spotter#readme"
+}

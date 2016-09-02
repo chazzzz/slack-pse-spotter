@@ -1,4 +1,4 @@
-var Botkit = require('/root/brobot/lib/Botkit.js');
+var Botkit = require('botkit');
 var http = require('http');
 
 var controller = Botkit.slackbot({
