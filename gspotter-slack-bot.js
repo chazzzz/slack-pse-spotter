@@ -1,4 +1,4 @@
-var Botkit = require('/root/brobot/lib/Botkit.js');
+var Botkit = require('botkit');
 var http = require('http');
 
 var controller = Botkit.slackbot({
@@ -16,6 +16,7 @@ controller.setupWebserver(6969, function(err, webserver) {
 controller.on('slash_command', function(bot, message) {
 
 	if (message.command === '/spot') {
+		bot.replyAcknowledge();
 		var symbol = message.text ? message.text : message.channel_name;
 		symbol = symbol.toUpperCase();
 
@@ -37,17 +38,22 @@ controller.on('slash_command', function(bot, message) {
 				} else {
 					bot.replyPublic(message, 'Sorry I didn\'t understand what you mean. Would you like to watch me dance instead?');
 				}
-			});
-		});
 
-		bot.replyAckowledge();
+
+			});
+
+		})
 	}
 
-	if (message.command === '/gainers') {
+	if (message.command === '/gainers' || message.command === '/losers' || message.command === '/actives') {
 		var url = 'http://www.pse.com.ph/stockMarket/dailySummary.html?method=getAdvancedSecurity&limit=10&ajax=true';
+		if(message.command === '/losers') 
+			url = 'http://www.pse.com.ph/stockMarket/dailySummary.html?method=getDeclinesSecurity&limit=10&ajax=true';
+		if(message.command === '/actives')
+			url = 'http://www.pse.com.ph/stockMarket/dailySummary.html?method=getTopSecurity&limit=10&ajax=true';
 
 		console.log('Requesting data to...', url);
-		http.get(url, function(response) {
+		http.get( url , function(response) {
 			var responseText = '';
 
 			response.on('data', function(chunk) {
@@ -65,8 +71,8 @@ controller.on('slash_command', function(bot, message) {
 						var price = data.records[i].lastTradePrice;
 						var change = data.records[i].percChangeClose;
 
-						change = parseFloat(Math.round(change * 100) / 100).toFixed(2);
-						replyMessage += '#' + symbol.toLowerCase() + " " + price + " (" + change + "%)\n";
+						change = parseFloat(Math.round(change * 100)/100).toFixed(2);
+						replyMessage += '#' +  symbol.toLowerCase() + " " + price + " (" + change + "%)\n";
 					}
 
 					bot.replyPublicDelayed(message, replyMessage);
